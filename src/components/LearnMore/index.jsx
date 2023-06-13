@@ -40,17 +40,32 @@ export default function LearnMore() {
   const [dataProcessingConsent, setDataProcessingConsent] = useState(false);
   const [informationConsent, setInformationConsent] = useState(false);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
+  const fetchCompanyName = () => {
+    const url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party";
+    const token = "beb168dcb3f3bd4e1bed3d1b8a381b8522483657";
 
-  //   axios.post('http://localhost:3001/send-email', { to,  subject, text })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
+    const options = {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Token " + token
+      },
+      body: JSON.stringify({ query: inn })
+    };
+
+    fetch(url, options)
+      .then(response => response.json())
+      .then(result => {
+        if (result.suggestions && result.suggestions.length > 0) {
+          setCompanyName(result.suggestions[0].value);
+        } else {
+          setCompanyName("");
+        }
+      })
+      .catch(error => console.log("Error", error));
+  };
 
   const [phoneNumber, setPhoneNumber] = useState('');
 
@@ -168,10 +183,10 @@ export default function LearnMore() {
             <div className={style.form}>
               <form onSubmit={handleSubmit}>
                 <div>
-                  <input className={style.input} onInvalid={handleInvalidInn} pattern="^\d{10}$" type="text" placeholder={t('inn')} name="inn" value={inn} onChange={(e) => setInn(e.target.value)} required />
+                  <input className={style.input} onBlur={fetchCompanyName} onInvalid={handleInvalidInn} pattern="^\d{10}$" type="text" placeholder={t('inn')} name="inn" value={inn} onChange={(e) => setInn(e.target.value)} required />
                 </div>
                 <div>
-                  <input className={style.input} type="text" name="companyName" placeholder={t('nameCompany')} value={companyName} onChange={(e) => setCompanyName(e.target.value)} required />
+                  <input className={style.input} type="text" name="companyName" placeholder={t('nameCompany')} value={companyName} readOnly />
                 </div>
                 <div>
                   <input className={style.input} onInvalid={handleInvalidFirstName} pattern="[A-Za-zА-Яа-яЁё\s]+" type="text" name="firstName" placeholder={t('firstName')} value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
