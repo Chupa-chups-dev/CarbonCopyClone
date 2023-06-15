@@ -1,6 +1,21 @@
 import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 import style from './style.module.scss'
 import { useTranslation } from "react-i18next"
+
+const textAnimation = {
+    hidden: {
+        y: -100,
+        opacity: 0,
+    },
+    visible: custom => ({
+        y: 0,
+        opacity: 1,
+        transition: { delay: custom * 0.3 },
+
+    }),
+}
+
 
 export default function Calculator() {
     const { t } = useTranslation();
@@ -35,10 +50,14 @@ export default function Calculator() {
 
     return (
         <>
-            <div className={style.calculator}>
+            <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ amount: 0.2, once: true }}
+                className={style.calculator}>
                 <div className="container">
-                    <h2>{t('calculator__title')}</h2>
-                    <div className={style.calculator__container}>
+                    <motion.h2 custom={1} variants={textAnimation}>{t('calculator__title')}</motion.h2>
+                    <motion.div custom={2} variants={textAnimation} className={style.calculator__container}>
                         <form onSubmit={handleSubmit}>
                             <div className={style.input}>
                                 <label htmlFor="amount">{t('calculator__amount')}</label>
@@ -89,11 +108,11 @@ export default function Calculator() {
                                 <p>{t('calculator__result3')} {dailyPayment.toFixed(2)} руб.</p>
                             </div>
                         )}
-                    </div>
+                    </motion.div>
 
                 </div>
                 <div className={style.line}></div>
-            </div >
+            </motion.div >
         </>
     )
 }

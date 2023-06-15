@@ -1,7 +1,21 @@
 import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 import style from './style.module.scss'
 import axios from 'axios';
 import { useTranslation } from "react-i18next"
+
+const textAnimation = {
+  hidden: {
+    y: -100,
+    opacity: 0,
+  },
+  visible: custom => ({
+    y: 0,
+    opacity: 1,
+    transition: { delay: custom * 0.3 },
+
+  }),
+}
 
 
 const initialValues = {
@@ -165,10 +179,14 @@ export default function LearnMore() {
   };
   return (
     <>
-      <div className={style.learnMore}>
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ amount: 0.2, once: true }}
+        className={style.learnMore}>
         <div className="container">
           <div className={style.learnMore__container}>
-            <div className={style.inform}>
+            <motion.div custom={1} variants={textAnimation} className={style.inform}>
               <h4 className={style.inform__title}>{t('learnMore__title')}</h4>
               <div className={style.inform__quation}>
                 <h6>{t('learnMore__quation__title1')}</h6>
@@ -179,8 +197,8 @@ export default function LearnMore() {
                 <p>{t('learnMore__quation__subtitle2')}</p>
               </div>
               <p className={style.inform__more}>{t('learnMore__quation__more')}</p>
-            </div>
-            <div className={style.form}>
+            </motion.div>
+            <motion.div custom={2} variants={textAnimation} className={style.form}>
               <form onSubmit={handleSubmit}>
                 <div>
                   <input className={style.input} onBlur={fetchCompanyName} onInvalid={handleInvalidInn} pattern="^\d{10}$" type="text" placeholder={t('inn')} name="inn" value={inn} onChange={(e) => setInn(e.target.value)} required />
@@ -228,7 +246,7 @@ export default function LearnMore() {
                   {t('Igive')}<span onClick={openModal2}>{t('Approval')}</span>{t('informationMaterials')}
                 </div>
               </form>
-            </div>
+            </motion.div>
           </div>
           {isOpen1 && (
             <div className={style.modal}>
@@ -263,7 +281,7 @@ export default function LearnMore() {
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
     </>
   )
 }
