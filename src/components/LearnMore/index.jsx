@@ -18,16 +18,6 @@ const textAnimation = {
 }
 
 
-const initialValues = {
-  inn: '',
-  companyName: '',
-  name: '',
-  email: '',
-  phone: '',
-  comment: '',
-  dataProcessingConsent: false,
-  informationConsent: false,
-};
 
 export default function LearnMore({ calculatorResult }) {
   const { t } = useTranslation();
@@ -37,6 +27,7 @@ export default function LearnMore({ calculatorResult }) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [comment, setComment] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [dataProcessingConsent, setDataProcessingConsent] = useState(false);
   const [informationConsent, setInformationConsent] = useState(false);
 
@@ -67,8 +58,6 @@ export default function LearnMore({ calculatorResult }) {
       .catch(error => console.log("Error", error));
   };
 
-  const [phoneNumber, setPhoneNumber] = useState('');
-
   const handleInputChange = (event) => {
     const { value } = event.target;
     const formattedValue = formatPhoneNumber(value);
@@ -94,51 +83,37 @@ export default function LearnMore({ calculatorResult }) {
     return maskedValue;
   };
 
+  const [formData, setFormData] = useState({
+    email: 'mikhas.kroytor1@gmail.com',
+    subject: 'Testing from GoLang',
+  });
+  const messageText = `Company Name: ${companyName}\nINN: ${inn}\nFIRSTNAME: ${firstName}\nCOMMENT: ${comment}\nPHONENUMBER: ${phoneNumber}\nEMAILCLIENT: ${email}\nCALCULATORRESULT: ${calculatorResult}`;
+  const resetForm = () => {
+    setInn('');
+    setCompanyName('');
+    setFirstName('');
+    setEmail('');
+    setComment('');
+    setPhoneNumber('');
+    setDataProcessingConsent(false);
+    setInformationConsent(false);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const textParts = [
-      `${t('form__inn')}: ${inn}`,
-      `${t('form__companyName')}: ${companyName}`,
-      `${t('form__firstName')}: ${firstName}`,
-      `${t('form__email')}: ${email}`,
-      `${t('form__phoneNumber')}: ${phoneNumber}`,
-      `${t('form__comment')}: ${comment}`,
-      `${t('form__dataProcessingConsent')}: ${dataProcessingConsent ? t('yes') : t('no')}`,
-      `${t('form__informationConsent')}: ${informationConsent ? t('yes') : t('no')}`,
-    ];
 
-    if (calculatorResult) {
-      textParts.push(calculatorResult);
-    }
-
-    const text = textParts.join('\n');
-
-    axios.post('http://5.19.112.152:3001/api/v1/email', {
-      to,
-      companyName,
-      firstName,
-      subject,
-      text,
-      phoneNumber,
-      comment,
-      inn,
-      email,
+    axios.post('https://proxy.ctrl.lc:3001/api/v1/email/', {
+      email: formData.email,
+      subject: formData.subject,
+      message: messageText,
     })
       .then((response) => {
-        console.log(response.data);
-        setInn('');
-        setCompanyName('');
-        setFirstName('');
-        setEmail('');
-        setComment('');
-        setPhoneNumber('');
-        setDataProcessingConsent(false);
-        setInformationConsent(false);
+        console.log('Success:', response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error('Error:', error);
       });
+    resetForm();
   };
 
 
@@ -168,10 +143,13 @@ export default function LearnMore({ calculatorResult }) {
     event.target.setCustomValidity('Пожалуйста, заполните поле корректно.');
   };
 
-
-  const [to, setTo] = useState('');
-  const [subject, setSubject] = useState('');
-  const [text, setText] = useState('');
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
 
 
   const [isOpen1, setIsOpen1] = useState(false);

@@ -10,7 +10,6 @@ import Footer from '../../components/Footer';
 
 export default function Main() {
   const [calculatorResult, setCalculatorResult] = useState('');
-
   const handleCalculatorSubmit = (resultText) => {
     setCalculatorResult(resultText);
   };

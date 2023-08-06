@@ -44,18 +44,20 @@ export default function Calculator({ onSubmitForm }) {
         setDailyPayment(dailyPayment);
     };
 
+
     const handleSubmit = (e) => {
         e.preventDefault();
         calculatePayments();
 
         // Здесь вызываем функцию onSubmitForm и передаем ей результаты калькулятора
-        onSubmitForm(`
-          ${t('calculator__result1')}
-          ${t('calculator__result2')} ${monthlyPayment.toFixed(2)} руб.
-          ${t('calculator__result3')} ${dailyPayment.toFixed(2)} руб.
-        `);
+        const resultText = `
+          Результаты расчета:
+          Месячный платеж: ${monthlyPayment.toFixed(2)} руб.
+          Ежедневный платеж: ${dailyPayment.toFixed(2)} руб.
+        `;
+        console.log(resultText)
+        onSubmitForm(resultText); // Вызываем колбек и передаем ему результаты
     };
-
 
     return (
         <>
