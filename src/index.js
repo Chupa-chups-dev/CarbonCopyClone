@@ -11,21 +11,16 @@ import FallbackLoading from './components/FallbackLoading';
 
 //Localisaton
 i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
+  .use(initReactI18next)
   .use(LanguageDetector)
   .use(HttpApi)
   .init({
     supportedLngs: ['en', 'ru'],
     fallbackLng: "ru",
-    detection: {
-      order: ['cookie', 'localStorage', 'htmlTag', 'path', 'subdomain'],
-      caches: ['cookie']
-    },
+    
     backend: {
       loadPath: '/assets/locales/{{lng}}/translation.json',
     },
-
-
   });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -109,6 +109,8 @@ export default function LearnMore({ calculatorResult }) {
     })
       .then((response) => {
         console.log('Success:', response.data);
+        alert('Сообщение доставлено!');
+        resetForm();
       })
       .catch((error) => {
         console.error('Error:', error);
