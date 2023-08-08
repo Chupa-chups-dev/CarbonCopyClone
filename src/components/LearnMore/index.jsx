@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import style from './style.module.scss'
 import axios from 'axios';
@@ -82,12 +82,21 @@ export default function LearnMore({ calculatorResult }) {
 
     return maskedValue;
   };
-
   const [formData, setFormData] = useState({
     email: 'mikhas.kroytor1@gmail.com',
     subject: 'Testing from GoLang',
   });
-  const messageText = `Company Name: ${companyName}\nINN: ${inn}\nFIRSTNAME: ${firstName}\nCOMMENT: ${comment}\nPHONENUMBER: ${phoneNumber}\nEMAILCLIENT: ${email}\nCALCULATORRESULT: ${calculatorResult}`;
+  const [source, setSource] = useState('');
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const source = urlParams.get('source');
+    setSource(source || 'Посадочная страница Карбон Копи'); // Если source не задан, установим пустую строку в состояние
+
+    // Ваш остальной код здесь
+  }, []);
+  const subjectText = `Новый лид! ${companyName}`
+  const messageText = `Вам поступила новая заявка!\n\nИсточник: ${source}\n\nИНН: ${inn}\nНазвание компании: ${companyName}\nКонтактное лицо: ${firstName}\nEmail: ${email}\nТелефон: ${phoneNumber}\n\nКомментарий к заявке: ${comment}\n\nПредварительный расчет: ${calculatorResult}`;
   const resetForm = () => {
     setInn('');
     setCompanyName('');
@@ -104,12 +113,12 @@ export default function LearnMore({ calculatorResult }) {
 
     axios.post('https://proxy.ctrl.lc:3001/api/v1/email/', {
       email: formData.email,
-      subject: formData.subject,
+      subject: subjectText,
       message: messageText,
     })
       .then((response) => {
         console.log('Success:', response.data);
-        alert('Сообщение доставлено!');
+        alert('Заявка отправлена. Мы с Вами свяжемся в течение 2-х рабочих дней.');
         resetForm();
       })
       .catch((error) => {

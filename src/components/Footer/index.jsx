@@ -8,12 +8,12 @@ export default function Footer() {
       <div className={style.footer}>
         <div className="container">
           <div className={style.footer__container}>
-              <ul>
-                <li><a href="tel:+74994605810">+7 (499) 460-58-10</a></li>
-                <li><a href="mailto:info@carboncopy.ru">info@carboncopy.ru</a></li>
-                <li>г. Москва, Трехпрудный пер., д. 9с2</li>
-              </ul>
-              <img src={logo} alt="logo" />
+            <ul>
+              <li><a href="tel:+74994605810">+7 (499) 460-58-10</a></li>
+              <li><a href="mailto:info@carboncopy.ru">info@carboncopy.ru</a></li>
+              <li>Трехпрудный пер. на г. Москва, Большой Гнездниковский пер., д. 1, стр. 2</li>
+            </ul>
+            <img src={logo} alt="logo" />
           </div>
           <p className={style.copyright}><a href="/">© 2021 Carbon Copy</a> | <a href="/">PopularFX Theme</a></p>
         </div>

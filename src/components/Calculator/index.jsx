@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import style from './style.module.scss'
 import { useTranslation } from "react-i18next"
 import MVideo from "../../assets/LogoMVideo.svg"
+import Logo from "../../assets/LogoFooter.png"
 
 const textAnimation = {
     hidden: {
@@ -26,6 +27,22 @@ export default function Calculator({ onSubmitForm }) {
     const [monthlyPayment, setMonthlyPayment] = useState(0);
     const [dailyPayment, setDailyPayment] = useState(0);
 
+    useEffect(() => {
+        let resultText = ``;
+        if (monthlyPayment && dailyPayment) {
+            resultText += `
+                Сумма предмета лизинга (руб.): ${amount}
+                Срок (годы): ${term} год
+                Аванс (%): ${downPayment}%
+                Месячный платеж: ${monthlyPayment.toFixed(2)} руб.
+                Ежедневный платеж: ${dailyPayment.toFixed(2)} руб.
+            `;
+        } else {
+            resultText += '“Отсутствует”';
+        }
+        onSubmitForm(resultText);
+    }, [monthlyPayment, dailyPayment]);
+
     const calculatePayments = () => {
         const matrix = {
             0: 1,
@@ -44,20 +61,11 @@ export default function Calculator({ onSubmitForm }) {
         setDailyPayment(dailyPayment);
     };
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
         calculatePayments();
-
-        // Здесь вызываем функцию onSubmitForm и передаем ей результаты калькулятора
-        const resultText = `
-          Результаты расчета:
-          Месячный платеж: ${monthlyPayment.toFixed(2)} руб.
-          Ежедневный платеж: ${dailyPayment.toFixed(2)} руб.
-        `;
-        console.log(resultText)
-        onSubmitForm(resultText); // Вызываем колбек и передаем ему результаты
     };
+
 
     return (
         <>
@@ -123,7 +131,7 @@ export default function Calculator({ onSubmitForm }) {
                             <a href="https://www.mvideo.ru/">
                                 <img src={MVideo} alt="" />
                                 <p>совместно с</p>
-                                <span>Carbon Copy</span>
+                                <img className={style.logo} src={Logo} alt="" />
                             </a>
                         </div>
                     </motion.div>
