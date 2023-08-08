@@ -83,7 +83,6 @@ export default function LearnMore({ calculatorResult }) {
     return maskedValue;
   };
   const [formData, setFormData] = useState({
-    email: 'mikhas.kroytor1@gmail.com',
     subject: 'Testing from GoLang',
   });
   const [source, setSource] = useState('');
@@ -95,6 +94,8 @@ export default function LearnMore({ calculatorResult }) {
 
     // Ваш остальной код здесь
   }, []);
+  const firstEmail = 'info@carboncopy.ru'; 
+  const secondEmail = 'd.zelenov@carboncopy.ru';
   const subjectText = `Новый лид! ${companyName}`
   const messageText = `Вам поступила новая заявка!\n\nИсточник: ${source}\n\nИНН: ${inn}\nНазвание компании: ${companyName}\nКонтактное лицо: ${firstName}\nEmail: ${email}\nТелефон: ${phoneNumber}\n\nКомментарий к заявке: ${comment}\n\nПредварительный расчет: ${calculatorResult}`;
   const resetForm = () => {
@@ -112,13 +113,25 @@ export default function LearnMore({ calculatorResult }) {
 
 
     axios.post('https://proxy.ctrl.lc:3001/api/v1/email/', {
-      email: formData.email,
+      email: firstEmail,
       subject: subjectText,
       message: messageText,
     })
       .then((response) => {
         console.log('Success:', response.data);
         alert('Заявка отправлена. Мы с Вами свяжемся в течение 2-х рабочих дней.');
+        resetForm();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+      axios.post('https://proxy.ctrl.lc:3001/api/v1/email/', {
+      email: secondEmail,
+      subject: subjectText,
+      message: messageText,
+    })
+      .then((response) => {
+        console.log('Success:', response.data);
         resetForm();
       })
       .catch((error) => {
