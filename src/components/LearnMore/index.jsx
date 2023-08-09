@@ -94,7 +94,7 @@ export default function LearnMore({ calculatorResult }) {
 
     // Ваш остальной код здесь
   }, []);
-  const firstEmail = 'info@carboncopy.ru'; 
+  const firstEmail = 'info@carboncopy.ru';
   const secondEmail = 'd.zelenov@carboncopy.ru';
   const subjectText = `Новый лид! ${companyName}`
   const messageText = `Вам поступила новая заявка!\n\nИсточник: ${source}\n\nИНН: ${inn}\nНазвание компании: ${companyName}\nКонтактное лицо: ${firstName}\nEmail: ${email}\nТелефон: ${phoneNumber}\n\nКомментарий к заявке: ${comment}\n\nПредварительный расчет: ${calculatorResult}`;
@@ -118,14 +118,13 @@ export default function LearnMore({ calculatorResult }) {
       message: messageText,
     })
       .then((response) => {
-        console.log('Success:', response.data);
-        alert('Заявка отправлена. Мы с Вами свяжемся в течение 2-х рабочих дней.');
+
         resetForm();
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-      axios.post('https://proxy.ctrl.lc:3001/api/v1/email/', {
+    axios.post('https://proxy.ctrl.lc:3001/api/v1/email/', {
       email: secondEmail,
       subject: subjectText,
       message: messageText,
@@ -138,6 +137,8 @@ export default function LearnMore({ calculatorResult }) {
         console.error('Error:', error);
       });
     resetForm();
+    setIsConfirmationModalOpen(true);
+
   };
 
 
@@ -192,6 +193,12 @@ export default function LearnMore({ calculatorResult }) {
 
   const closeModal2 = () => {
     setIsOpen2(false);
+  };
+
+
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const closeConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
   };
   return (
     <>
@@ -292,6 +299,19 @@ export default function LearnMore({ calculatorResult }) {
                   <path d="M5.63586 5.63599L18.3638 18.3639" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                   <path d="M5.63586 18.364L18.3638 5.63609" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
+                </button>
+              </div>
+            </div>
+          )}
+          {isConfirmationModalOpen && (
+            <div className={style.modalOk}>
+              <div className={style.modalOk__content}>
+                <h2>Заявка отправлена. Мы с Вами свяжемся в течение 2-х рабочих дней.</h2>
+                <button onClick={closeConfirmationModal}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.63586 5.63599L18.3638 18.3639" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M5.63586 18.364L18.3638 5.63609" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </button>
               </div>
             </div>
