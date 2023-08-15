@@ -11,7 +11,7 @@ export default function Footer() {
             <ul>
               <li><a href="tel:+74994605810">+7 (499) 460-58-10</a></li>
               <li><a href="mailto:info@carboncopy.ru">info@carboncopy.ru</a></li>
-              <li>Трехпрудный пер. на г. Москва, Большой Гнездниковский пер., д. 1, стр. 2</li>
+              <li>г. Москва, Большой Гнездниковский пер., д. 1, стр. 2</li>
             </ul>
             <img src={logo} alt="logo" />
           </div>
